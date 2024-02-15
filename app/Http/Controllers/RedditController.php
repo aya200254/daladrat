@@ -10,12 +10,12 @@ class RedditController extends Controller
         $url = 'https://www.reddit.com/r/FlutterDev/hot.json';
         $command = "curl $url";
         $response = exec($command);
-
+    
         if ($response === false) {
             // Handle error
             return view('error', ['message' => 'Failed to execute curl command']);
         }
-
+    
         $data = json_decode($response, true);
         if (isset($data['data']['children'])) {
             $posts = $data['data']['children'];
@@ -23,21 +23,21 @@ class RedditController extends Controller
             // Handle error
             return view('error', ['message' => 'Invalid response from Reddit API']);
         }
-
-        return view('reddit', ['posts' => $posts]);
+    
+        return $posts;
     }
-
+    
     public function getNewPosts()
     {
         $url = 'https://www.reddit.com/r/FlutterDev/new.json';
         $command = "curl $url";
         $response = exec($command);
-
+    
         if ($response === false) {
             // Handle error
             return view('error', ['message' => 'Failed to execute curl command']);
         }
-
+    
         $data = json_decode($response, true);
         if (isset($data['data']['children'])) {
             $posts = $data['data']['children'];
@@ -45,7 +45,38 @@ class RedditController extends Controller
             // Handle error
             return view('error', ['message' => 'Invalid response from Reddit API']);
         }
-
-        return view('reddit', ['posts' => $posts]);
+    
+        return $posts;
     }
+    
+    public function getRisingPosts()
+    {
+        $url = 'https://www.reddit.com/r/FlutterDev/rising.json';
+        $command = "curl $url";
+        $response = exec($command);
+    
+        if ($response === false) {
+            // Handle error
+            return view('error', ['message' => 'Failed to execute curl command']);
+        }
+    
+        $data = json_decode($response, true);
+        if (isset($data['data']['children'])) {
+            $posts = $data['data']['children'];
+        } else {
+            // Handle error
+            return view('error', ['message' => 'Invalid response from Reddit API']);
+        }
+    
+        return $posts;
+    }
+    public function welcome()
+{
+    $hotPosts = $this->getHotPosts();
+    $newPosts = $this->getNewPosts();
+    $risingPosts = $this->getRisingPosts();
+
+    return view('welcome', compact('hotPosts', 'newPosts', 'risingPosts'));
+}
+
 }

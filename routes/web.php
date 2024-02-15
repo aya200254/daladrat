@@ -15,11 +15,11 @@ use App\Http\Controllers\RedditController;
 */
 
 
-Route::get('/hot', [RedditController::class, 'getHotPosts']);
-Route::get('/new', [RedditController::class, 'getNewPosts']);
-Route::get('/rising', [RedditController::class, 'getRisingPosts']);
+Route::get('/hot', [RedditController::class, 'getHotPosts'])->name('hot');;
+Route::get('/new', [RedditController::class, 'getNewPosts'])->name('new');;
+Route::get('/rising', [RedditController::class, 'getRisingPosts'])->name('rising');;
 
-Route::get('/', function () {
+Route::get('/',  [RedditController::class, 'welcome'])->name('welcome');;
 
-    return view('welcome');
-});
+
+
